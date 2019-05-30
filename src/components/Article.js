@@ -1,37 +1,67 @@
-import React, {Component} from "react";
+import React, {Component, PureComponent} from "react";
 
-class Article extends Component{
+class Article extends PureComponent{
 
     constructor(props){
         super(props);
         this.state={
-            isOpen:false
+            count: 0
         }
-        this.handleClick = handleClick.bind(this)
     }
+/*
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.state.isOpen !== nextState.isOpen
+    }
+*/
+    componentWillMount() {
+        console.log('---','mounting')
+    }
+
+    /*
+    componentWillReceiveProps(nextProps){
+        console.log('---','will receive props')
+        if(nextProps.defaultOpen !== this.props.defaultOpen){ this.setState({
+            isOpen: nextProps.defaultOpen
+        })
+        }
+    }*/
+
+    componentWillUpdate() {
+        console.log('---','will update')
+    }
+
+
+
     render(){
-        const{article}=this.props;
+        const{article, isOpen, onButtonClick}=this.props;
         console.log('---');
-        const body = this.state.isOpen && <section>{article.text}</section>
+        const body = isOpen && <section className="card-text">{article.text}</section>
         return(
-            <div>
-                <h2>
+            <div className="card mb-4">
+                <div className="card-header">
+                <h2 onClick={this.incrementCounter} className="display-4">
                     {article.title}
-                </h2>
-                <button onClick={this.handleClick}>
-                    {this.state.isOpen ? 'close' : 'open'}
+                    clicked {this.state.count}
+                <button className="btn btn-secondary mx-3" onClick={onButtonClick}>
+                    {isOpen ? 'close' : 'open'}
                 </button>
+                </h2>
+                </div>
+                <div className="card-body">
+                    <h6>creation date: {(new Date(article.date)).toDateString()}</h6>
                 {body}
-                <h3>creation date: {(new Date(article.date)).toDateString()}</h3>
+
+                </div>
             </div>
         )
     }
+
+    incrementCounter =() => {
+        this.setState({
+            count: this.state.count + 1
+        })
+    }
+
 }
 
-function handleClick() {
-    console.log('---','clicked')
-    this.setState({
-        isOpen: !this.state.isOpen
-    })
-}
 export default Article

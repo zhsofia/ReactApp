@@ -1,10 +1,5 @@
 import React from 'react'
 import{render} from 'react-dom'
+import App from './components/App.js'
 
-function HelloWorld() {
-    return (
-        <div>
-            <h1></h1>
-        </div>
-    )
-}
+render(<App></App>, document.getElementById('root'));
